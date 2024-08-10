@@ -14,8 +14,6 @@ GPIO.setup(17, GPIO.OUT)
 GPIO.setup(18, GPIO.OUT)
 GPIO.setup(22,GPIO.OUT)
 GPIO.setup(23,GPIO.OUT)
-GPIO.setup(9,GPIO.OUT)
-GPIO.setup(25,GPIO.OUT)
 
 # Define the motor with forward and backward pins
 # motor = Motor(forward=17, backward=18)
@@ -37,37 +35,25 @@ def motor_job():
          if state == "forward":
           GPIO.output(17,GPIO.HIGH)
           GPIO.output(18,GPIO.LOW)
-          GPIO.output(9,GPIO.HIGH)
-          GPIO.output(25,GPIO.LOW)
          elif state == "stop":
           GPIO.output(17,GPIO.LOW)
           GPIO.output(18,GPIO.LOW)
-          GPIO.output(9,GPIO.LOW)
-          GPIO.output(25,GPIO.LOW)
          elif state == "backward":
           GPIO.output(17,GPIO.LOW)
           GPIO.output(18,GPIO.HIGH)
-          GPIO.output(9,GPIO.LOW)
-          GPIO.output(25,GPIO.HIGH)
          elif state == "left":
           GPIO.output(17,GPIO.HIGH)
           GPIO.output(18,GPIO.LOW)
-          GPIO.output(9,GPIO.HIGH)
-          GPIO.output(25,GPIO.LOW)
           GPIO.output(23,GPIO.HIGH)
           GPIO.output(22,GPIO.LOW)
          elif state == "right":
           GPIO.output(17,GPIO.HIGH)
           GPIO.output(18,GPIO.LOW)
-          GPIO.output(9,GPIO.HIGH)
-          GPIO.output(25,GPIO.LOW)
           GPIO.output(22,GPIO.HIGH)
           GPIO.output(23,GPIO.LOW)
          elif state == "straight":
           GPIO.output(17,GPIO.LOW)
           GPIO.output(18,GPIO.LOW)
-          GPIO.output(9,GPIO.LOW)
-          GPIO.output(25,GPIO.LOW)
           GPIO.output(22,GPIO.LOW)
           GPIO.output(23,GPIO.LOW)
 

@@ -7,22 +7,39 @@ import RPi.GPIO as GPIO
 
 app = Flask(__name__)
 
-
+motot1_in1 = 24
+motot1_in2 = 23
+en1 = 25
+motor2_in1 = 20
+mototr2_in2 = 16
+en2 = 21
+steer_in1 = 22
+steer_in2 = 27
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(17, GPIO.OUT)
-GPIO.setup(18, GPIO.OUT)
-GPIO.setup(22,GPIO.OUT)
-GPIO.setup(23,GPIO.OUT)
 
-# Define the motor with forward and backward pins
-# motor = Motor(forward=17, backward=18)
-# steer = Motor(forward=22, backward=23)
+GPIO.setup(motot1_in1,GPIO.OUT)
+GPIO.setup(motot1_in2,GPIO.OUT)
+GPIO.setup(en1,GPIO.OUT)
 
-# Flag to indicate if motor is currently running
-motor_running = Event()
-# steer_turned = False
+GPIO.setup(motor2_in1,GPIO.OUT)
+GPIO.setup(mototr2_in2,GPIO.OUT)
+GPIO.setup(en2,GPIO.OUT)
 
+GPIO.setup(steer_in1,GPIO.OUT)
+GPIO.setup(steer_in2,GPIO.OUT)
+
+GPIO.output(motot1_in1,GPIO.LOW)
+GPIO.output(motot1_in2,GPIO.LOW)
+GPIO.output(motor2_in1,GPIO.LOW)
+GPIO.output(mototr2_in2,GPIO.LOW)
+GPIO.output(steer_in1,GPIO.LOW)
+GPIO.output(steer_in2,GPIO.LOW)
+
+p=GPIO.PWM(en1,1000)
+p2=GPIO.PWM(en2,1000)
+p.start(25)
+p2.start(25)
 
 global state
 
@@ -31,31 +48,63 @@ state = ""
 # added this while loop for capturing the timing of button click and to make sure that it always stay same state
 def motor_job():
 
-        while not motor_running.is_set():
-         if state == "forward":
-          GPIO.output(17,GPIO.HIGH)
-          GPIO.output(18,GPIO.LOW)
-         elif state == "stop":
-          GPIO.output(17,GPIO.LOW)
-          GPIO.output(18,GPIO.LOW)
-         elif state == "backward":
-          GPIO.output(17,GPIO.LOW)
-          GPIO.output(18,GPIO.HIGH)
-         elif state == "left":
-          GPIO.output(17,GPIO.HIGH)
-          GPIO.output(18,GPIO.LOW)
-          GPIO.output(23,GPIO.HIGH)
-          GPIO.output(22,GPIO.LOW)
-         elif state == "right":
-          GPIO.output(17,GPIO.HIGH)
-          GPIO.output(18,GPIO.LOW)
-          GPIO.output(22,GPIO.HIGH)
-          GPIO.output(23,GPIO.LOW)
-         elif state == "straight":
-          GPIO.output(17,GPIO.LOW)
-          GPIO.output(18,GPIO.LOW)
-          GPIO.output(22,GPIO.LOW)
-          GPIO.output(23,GPIO.LOW)
+    while True:
+        if state == "forward":
+        
+            # motor back and front
+            GPIO.output(motot1_in1,GPIO.HIGH)
+            GPIO.output(motot1_in2,GPIO.LOW)
+            GPIO.output(motor2_in1,GPIO.HIGH)
+            GPIO.output(mototr2_in2,GPIO.LOW)
+
+        elif state == "stop":
+
+            # motor back and front
+            GPIO.output(motot1_in1,GPIO.LOW)
+            GPIO.output(motot1_in2,GPIO.LOW)
+            GPIO.output(motor2_in1,GPIO.LOW)
+            GPIO.output(mototr2_in2,GPIO.LOW)
+
+        elif state == "backward":
+
+            # motor back and front
+            GPIO.output(motot1_in1,GPIO.LOW)
+            GPIO.output(motot1_in2,GPIO.HIGH)
+            GPIO.output(motor2_in1,GPIO.LOW)
+            GPIO.output(mototr2_in2,GPIO.HIGH)
+
+        elif state == "left":
+
+            # motor back and front
+            GPIO.output(motot1_in1,GPIO.HIGH)
+            GPIO.output(motot1_in2,GPIO.LOW)
+            GPIO.output(motor2_in1,GPIO.HIGH)
+            GPIO.output(mototr2_in2,GPIO.LOW)
+
+            GPIO.output(steer_in1,GPIO.LOW)
+            GPIO.output(steer_in2,GPIO.HIGH)
+
+        elif state == "right":
+
+            # motor back and front
+            GPIO.output(motot1_in1,GPIO.HIGH)
+            GPIO.output(motot1_in2,GPIO.LOW)
+            GPIO.output(motor2_in1,GPIO.HIGH)
+            GPIO.output(mototr2_in2,GPIO.LOW)
+
+            GPIO.output(steer_in1,GPIO.HIGH)
+            GPIO.output(steer_in2,GPIO.LOW)
+
+        elif state == "straight":
+
+            # motor back and front
+            GPIO.output(motot1_in1,GPIO.LOW)
+            GPIO.output(motot1_in2,GPIO.LOW)
+            GPIO.output(motor2_in1,GPIO.LOW)
+            GPIO.output(mototr2_in2,GPIO.LOW)
+
+            GPIO.output(steer_in1,GPIO.LOW)
+            GPIO.output(steer_in2,GPIO.LOW)
 
 @app.route('/')
 def index():
